@@ -155,6 +155,62 @@ public class Main {
 				for (Article article : articles) {
 					System.out.printf("%d	|	%s\n", article.id, article.title);
 				}
+			} else if(cmd.startsWith("article modify")) {		
+				System.out.println("== 게시글 수정 ==\n");
+				int articleId = 0;
+				try {
+					articleId = Integer.parseInt(cmd.split(" ")[2]);					
+				} catch(ArrayIndexOutOfBoundsException e) {
+					System.out.println("검색할 게시글 번호를 입력해주세요!");
+					continue;
+				}
+				
+				System.out.print("수정할 제목 : ");
+				String title = sc.nextLine();
+				System.out.print("수정할 내용 : ");
+				String body = sc.nextLine();
+				
+				Connection conn = null;
+				PreparedStatement pstmt = null;
+				
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+					String url = "jdbc:mysql://127.0.0.1:3306/jdbc_article_manager?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+
+					conn = DriverManager.getConnection(url, "root", "");
+
+					String sql = "UPDATE article";
+					sql += " SET updateDate = NOW()";
+					sql += ", title = '" + title + "'";
+					sql += ", `body` = '" + body + "'";
+					sql += " WHERE id = " + articleId;
+					
+					pstmt = conn.prepareStatement(sql);
+					pstmt.executeUpdate();
+					
+					System.out.println("[✔] 수정 완료!");
+					
+				} catch (ClassNotFoundException e) {
+					System.out.println("드라이버 로딩 실패");
+				} catch (SQLException e) {
+					System.out.println("에러: " + e);
+				} finally {
+					try {
+						if (pstmt != null && !pstmt.isClosed()) {
+							pstmt.close();
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					
+					try {
+						if (conn != null && !conn.isClosed()) {
+							conn.close();
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 
