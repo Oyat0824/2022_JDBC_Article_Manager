@@ -31,5 +31,4 @@ public class Article extends Object {
 		return "Article [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", title=" + title
 				+ ", body=" + body + "]";
 	}
-
 }
