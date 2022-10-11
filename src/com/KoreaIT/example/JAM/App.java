@@ -77,6 +77,7 @@ public class App {
 			System.out.println(CT.FONT_GREEN + "article modify [번호]		: 게시글 수정" + CT.RESET);
 			System.out.println(CT.FONT_YELLOW + "article delete [번호]		: 게시글 삭제" + CT.RESET);
 			System.out.println(CT.FONT_GREEN + "article list			: 게시글 목록" + CT.RESET);
+			System.out.println(CT.FONT_RED + "exit				: 프로그램 종료" + CT.RESET);
 		}
 
 		// 게시글 작성
