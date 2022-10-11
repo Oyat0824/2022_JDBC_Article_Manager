@@ -89,7 +89,7 @@ public class App {
 		} 
 		else if (cmd.startsWith("article modify")) {
 			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 수정 ==\n" + CT.RESET);
-			int articleId = 0;
+			int articleId = -1;
 
 			try {
 				articleId = Integer.parseInt(cmd.split(" ")[2]);
@@ -114,6 +114,37 @@ public class App {
 			DBUtil.update(conn, sql);
 			
 			System.out.printf("[✔] %d번 게시글이 수정 되었습니다.\n", articleId);
+		}
+		else if (cmd.startsWith("article delete")) {
+			int articleId = -1;
+
+			try {
+				articleId = Integer.parseInt(cmd.split(" ")[2]);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("[✖] 삭제할 게시글 번호를 입력해주세요!");
+				return;
+			}
+			
+			SecSql sql = new SecSql();
+			sql.append("SELECT COUNT(*)");
+			sql.append("FROM article");
+			sql.append("WHERE id = ?", articleId);
+			
+			int articlesCount = DBUtil.selectRowIntValue(conn, sql);
+			
+			if(articlesCount == 0) {
+				System.out.printf("[✖] %d번 게시글은 존재하지 않습니다!\n", articleId);
+				return;
+			}
+			
+			sql = new SecSql();
+			
+			sql.append("DELETE FROM article");
+			sql.append("WHERE id = ?", articleId);
+			
+			DBUtil.delete(conn, sql);
+			
+			System.out.printf("[✔] %d번 게시글이 삭제 되었습니다.\n", articleId);
 		}
 		else if (cmd.equals("article list")) {
 			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 목록 ==\n" + CT.RESET);
