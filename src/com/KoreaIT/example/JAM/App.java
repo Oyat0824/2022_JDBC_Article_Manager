@@ -22,10 +22,10 @@ public class App {
 		System.out.println("█░░░░░░░░▀█▄▀▄▀██████░▀█▄▀▄▀██████░");
 		System.out.println("░░░░░░░░░░░▀█▄█▄███▀░░░ ▀██▄█▄███▀░");
 		System.out.println(">> JAM 시스템에 오신것을 환영합니다");
-		System.out.println(CT.RESET);
+		System.out.print(CT.RESET);
 
 		while (true) {
-			System.out.print(CT.FONT_CYAN + "명령어 > " + CT.RESET);
+			System.out.printf(CT.FONT_CYAN + "\n명령어 > " + CT.RESET);
 			String cmd = sc.nextLine().trim();
 
 			if (cmd.equals("exit")) {
@@ -69,9 +69,19 @@ public class App {
 	}
 
 	private void doAction(Connection conn, Scanner sc, String cmd) {
+		// 도움말
+		if (cmd.equals("help")) {
+			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 명령어 목록 ==" + CT.RESET);
+			System.out.println(CT.FONT_GREEN + "article write			: 게시글 작성" + CT.RESET);
+			System.out.println(CT.FONT_YELLOW + "article detail [번호]		: 게시글 열람" + CT.RESET);
+			System.out.println(CT.FONT_GREEN + "article modify [번호]		: 게시글 수정" + CT.RESET);
+			System.out.println(CT.FONT_YELLOW + "article delete [번호]		: 게시글 삭제" + CT.RESET);
+			System.out.println(CT.FONT_GREEN + "article list			: 게시글 목록" + CT.RESET);
+		}
+
 		// 게시글 작성
 		if (cmd.equals("article write")) {
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 작성 ==\n" + CT.RESET);
+			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 작성 ==" + CT.RESET);
 			System.out.print(CT.FONT_BLUE + "제목 : " + CT.RESET);
 			String title = sc.nextLine();
 			System.out.print(CT.FONT_BLUE + "내용 : " + CT.RESET);
@@ -104,23 +114,24 @@ public class App {
 			sql.append("SELECT *");
 			sql.append("FROM article");
 			sql.append("WHERE id = ?", articleId);
-			
+
 			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
 
 			if (articleMap.isEmpty()) {
 				System.out.printf("[✖] 게시글이 존재하지 않습니다!\n");
 				return;
 			}
-			
+
 			Article article = new Article(articleMap);
-			
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 열람 ==\n" + CT.RESET);
+
+			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 열람 ==" + CT.RESET);
 			System.out.printf("번호 : %d\n", article.id);
 			System.out.printf("제목 : %s\n", article.title);
 			System.out.printf("작성일 : %s\n", article.regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-			System.out.printf("수정일 : %s\n", article.updateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			System.out.printf("수정일 : %s\n",
+					article.updateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 			System.out.printf("--------------------------- \n");
-			System.out.printf("%s\n", article.body);			
+			System.out.printf("%s\n", article.body);
 		}
 		// 게시글 수정
 		else if (cmd.startsWith("article modify")) {
@@ -132,7 +143,7 @@ public class App {
 				System.out.println("[✖] 검색할 게시글 번호를 입력해주세요!");
 				return;
 			}
-			
+
 			SecSql sql = new SecSql();
 			sql.append("SELECT COUNT(*)");
 			sql.append("FROM article");
@@ -145,7 +156,7 @@ public class App {
 				return;
 			}
 
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 수정 ==\n" + CT.RESET);
+			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 수정 ==" + CT.RESET);
 			System.out.print(CT.FONT_BLUE + "수정할 제목 : " + CT.RESET);
 			String title = sc.nextLine();
 			System.out.print(CT.FONT_BLUE + "수정할 내용 : " + CT.RESET);
@@ -215,9 +226,9 @@ public class App {
 				System.out.println("[✖] 게시글이 존재하지 않습니다.");
 				return;
 			}
-			
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 목록 ==\n" + CT.RESET);
-			System.out.println("번호	|	제목	|	작성일");
+
+			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 목록 ==" + CT.RESET);
+			System.out.println("번호	|	제목");
 			for (Article article : articles) {
 				System.out.printf("%d	|	%s\n", article.id, article.title);
 			}
