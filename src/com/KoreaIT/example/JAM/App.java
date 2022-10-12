@@ -71,18 +71,23 @@ public class App {
 	private void doAction(Connection conn, Scanner sc, String cmd) {
 		// 도움말
 		if (cmd.equals("help")) {
-			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 명령어 목록 ==" + CT.RESET);
+			System.out.println(CT.F_PURPLE + "=== 게시글 전용 명령어 ===" + CT.RESET);
 			System.out.println(CT.F_GREEN + "article write			: 게시글 작성" + CT.RESET);
 			System.out.println(CT.F_YELLOW + "article detail [번호]		: 게시글 열람" + CT.RESET);
 			System.out.println(CT.F_GREEN + "article modify [번호]		: 게시글 수정" + CT.RESET);
 			System.out.println(CT.F_YELLOW + "article delete [번호]		: 게시글 삭제" + CT.RESET);
 			System.out.println(CT.F_GREEN + "article list			: 게시글 목록" + CT.RESET);
+			
+			System.out.println(CT.F_PURPLE + "\n=== 회원 전용 명령어 ===" + CT.RESET);
+			System.out.println(CT.F_GREEN + "member join			: 회원가입" + CT.RESET);
+			
+			System.out.println(CT.F_PURPLE + "\n=== 기타 명령어 ===" + CT.RESET);
 			System.out.println(CT.F_RED + "exit				: 프로그램 종료" + CT.RESET);
 		}
 
 		// 게시글 작성
 		if (cmd.equals("article write")) {
-			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 작성 ==" + CT.RESET);
+			System.out.println(CT.F_PURPLE + "=== 게시글 작성 ===" + CT.RESET);
 			System.out.print(CT.F_BLUE + "제목 : " + CT.RESET);
 			String title = sc.nextLine();
 			System.out.print(CT.F_BLUE + "내용 : " + CT.RESET);
@@ -125,7 +130,7 @@ public class App {
 
 			Article article = new Article(articleMap);
 
-			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 열람 ==" + CT.RESET);
+			System.out.println(CT.F_PURPLE + "=== 게시글 열람 ===" + CT.RESET);
 			System.out.printf("번호 : %d\n", article.id);
 			System.out.printf("제목 : %s\n", article.title);
 			System.out.printf("작성일 : %s\n", article.regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -157,7 +162,7 @@ public class App {
 				return;
 			}
 
-			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 수정 ==" + CT.RESET);
+			System.out.println(CT.F_PURPLE + "=== 게시글 수정 ===" + CT.RESET);
 			System.out.print(CT.F_BLUE + "수정할 제목 : " + CT.RESET);
 			String title = sc.nextLine();
 			System.out.print(CT.F_BLUE + "수정할 내용 : " + CT.RESET);
@@ -204,8 +209,8 @@ public class App {
 			sql.append("WHERE id = ?", articleId);
 
 			DBUtil.delete(conn, sql);
-
-			System.out.printf(CT.BG_BLACK + CT.F_WHITE + "== %d번 게시물 삭제 ==\n" + CT.RESET, articleId);
+			
+			System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%d번 게시물 삭제\n" + CT.RESET, articleId);
 		}
 		// 게시글 목록
 		else if (cmd.equals("article list")) {
@@ -228,8 +233,8 @@ public class App {
 				return;
 			}
 
-			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 목록 ==" + CT.RESET);
-			System.out.println("번호	|	제목");
+			System.out.println(CT.F_PURPLE + "=== 게시물 목록 ===" + CT.RESET);
+			System.out.println(CT.F_BLUE + "번호	|	제목" + CT.RESET);
 			for (Article article : articles) {
 				System.out.printf("%d	|	%s\n", article.id, article.title);
 			}
@@ -241,8 +246,9 @@ public class App {
 			String loginPwChk = null;
 			String name = null;
 			
-			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 회원 가입 ==" + CT.RESET);
+			System.out.println(CT.F_PURPLE + "=== 회원 가입 ===" + CT.RESET);
 			while(true) {
+			// 아이디 입력 확인 부분
 				System.out.print(CT.F_CYAN + "가입 ID : " + CT.RESET);
 				loginId = sc.nextLine().trim();
 				
@@ -251,10 +257,24 @@ public class App {
 					continue;
 				}
 				
+				SecSql sql = new SecSql();
+
+				sql.append("SELECT COUNT(loginId) > 0");
+				sql.append("FROM `member`");
+				sql.append("WHERE loginId = ?", loginId);
+				
+				boolean isLoginIdDupChk = DBUtil.selectRowBooleanValue(conn, sql);
+				
+				if(isLoginIdDupChk) {
+					System.out.println(CT.F_RED + "[✖] " + CT.RESET + "이미 존재하는 아이디입니다!");
+					continue;
+				}
+				
 				break;
 			}
 			
 			while(true) {
+			// 비밀번호 입력 확인 부분
 				System.out.print(CT.F_CYAN + "비밀번호 : " + CT.RESET);
 				loginPw = sc.nextLine().trim();
 				
@@ -288,6 +308,7 @@ public class App {
 			}
 			
 			while(true) {
+			// 이름 입력 확인 부분
 				System.out.print(CT.F_CYAN + "이름 : " + CT.RESET);
 				name = sc.nextLine().trim();
 				
@@ -308,9 +329,9 @@ public class App {
 			sql.append(", loginPw = ?", loginPw);
 			sql.append(", `name` = ?", name);
 			
-			int id = DBUtil.insert(conn, sql);
+			DBUtil.insert(conn, sql);
 			
-			System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%s 회원님 회원가입이 완료되었습니다.\n", name);
+			System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%s 님, 회원가입이 완료되었습니다.\n", name);
 			
 		}
 	}
