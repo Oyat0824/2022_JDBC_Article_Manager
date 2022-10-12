@@ -17,7 +17,7 @@ public class App {
 	public void run() {
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println(CT.FONT_GREEN);
+		System.out.println(CT.F_GREEN);
 		System.out.println("▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
 		System.out.println("█░░░░░░░░▀█▄▀▄▀██████░▀█▄▀▄▀██████░");
 		System.out.println("░░░░░░░░░░░▀█▄█▄███▀░░░ ▀██▄█▄███▀░");
@@ -25,11 +25,11 @@ public class App {
 		System.out.print(CT.RESET);
 
 		while (true) {
-			System.out.printf(CT.FONT_CYAN + "\n명령어 > " + CT.RESET);
+			System.out.printf(CT.F_CYAN + "\n명령어 > " + CT.RESET);
 			String cmd = sc.nextLine().trim();
 
 			if (cmd.equals("exit")) {
-				System.out.println("[✔] 프로그램을 종료합니다.");
+				System.out.println(CT.F_GREEN + "[✔] " + CT.RESET + "프로그램을 종료합니다.");
 				break;
 			}
 
@@ -38,7 +38,7 @@ public class App {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				System.out.println("[✖] JDBC 드라이버 로딩 실패");
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "JDBC 드라이버 로딩 실패");
 				break;
 			}
 
@@ -51,7 +51,7 @@ public class App {
 
 				doAction(conn, sc, cmd);
 			} catch (SQLException e) {
-				System.out.println("[✖] DB 접속 에러 : " + e);
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "DB 접속 에러 : " + e);
 				break;
 			} finally {
 				try {
@@ -71,21 +71,21 @@ public class App {
 	private void doAction(Connection conn, Scanner sc, String cmd) {
 		// 도움말
 		if (cmd.equals("help")) {
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 명령어 목록 ==" + CT.RESET);
-			System.out.println(CT.FONT_GREEN + "article write			: 게시글 작성" + CT.RESET);
-			System.out.println(CT.FONT_YELLOW + "article detail [번호]		: 게시글 열람" + CT.RESET);
-			System.out.println(CT.FONT_GREEN + "article modify [번호]		: 게시글 수정" + CT.RESET);
-			System.out.println(CT.FONT_YELLOW + "article delete [번호]		: 게시글 삭제" + CT.RESET);
-			System.out.println(CT.FONT_GREEN + "article list			: 게시글 목록" + CT.RESET);
-			System.out.println(CT.FONT_RED + "exit				: 프로그램 종료" + CT.RESET);
+			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 명령어 목록 ==" + CT.RESET);
+			System.out.println(CT.F_GREEN + "article write			: 게시글 작성" + CT.RESET);
+			System.out.println(CT.F_YELLOW + "article detail [번호]		: 게시글 열람" + CT.RESET);
+			System.out.println(CT.F_GREEN + "article modify [번호]		: 게시글 수정" + CT.RESET);
+			System.out.println(CT.F_YELLOW + "article delete [번호]		: 게시글 삭제" + CT.RESET);
+			System.out.println(CT.F_GREEN + "article list			: 게시글 목록" + CT.RESET);
+			System.out.println(CT.F_RED + "exit				: 프로그램 종료" + CT.RESET);
 		}
 
 		// 게시글 작성
 		if (cmd.equals("article write")) {
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 작성 ==" + CT.RESET);
-			System.out.print(CT.FONT_BLUE + "제목 : " + CT.RESET);
+			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 작성 ==" + CT.RESET);
+			System.out.print(CT.F_BLUE + "제목 : " + CT.RESET);
 			String title = sc.nextLine();
-			System.out.print(CT.FONT_BLUE + "내용 : " + CT.RESET);
+			System.out.print(CT.F_BLUE + "내용 : " + CT.RESET);
 			String body = sc.nextLine();
 
 			SecSql sql = new SecSql();
@@ -98,7 +98,7 @@ public class App {
 
 			int id = DBUtil.insert(conn, sql);
 
-			System.out.printf("[✔] %d번 게시글이 생성 되었습니다.\n", id);
+			System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%d번 게시글이 생성 되었습니다.\n", id);
 		}
 		// 게시글 열람
 		else if (cmd.startsWith("article detail")) {
@@ -107,7 +107,7 @@ public class App {
 			try {
 				articleId = Integer.parseInt(cmd.split(" ")[2]);
 			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println("[✖] 열람할 게시글 번호를 입력해주세요!");
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "열람할 게시글 번호를 입력해주세요!");
 				return;
 			}
 
@@ -119,13 +119,13 @@ public class App {
 			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
 
 			if (articleMap.isEmpty()) {
-				System.out.printf("[✖] 게시글이 존재하지 않습니다!\n");
+				System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "게시글이 존재하지 않습니다!\n");
 				return;
 			}
 
 			Article article = new Article(articleMap);
 
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 열람 ==" + CT.RESET);
+			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 열람 ==" + CT.RESET);
 			System.out.printf("번호 : %d\n", article.id);
 			System.out.printf("제목 : %s\n", article.title);
 			System.out.printf("작성일 : %s\n", article.regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -141,7 +141,7 @@ public class App {
 			try {
 				articleId = Integer.parseInt(cmd.split(" ")[2]);
 			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println("[✖] 검색할 게시글 번호를 입력해주세요!");
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "검색할 게시글 번호를 입력해주세요!");
 				return;
 			}
 
@@ -153,14 +153,14 @@ public class App {
 			int articlesCount = DBUtil.selectRowIntValue(conn, sql);
 
 			if (articlesCount == 0) {
-				System.out.printf("[✖] %d번 게시글은 존재하지 않습니다!\n", articleId);
+				System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "%d번 게시글은 존재하지 않습니다!\n", articleId);
 				return;
 			}
 
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 수정 ==" + CT.RESET);
-			System.out.print(CT.FONT_BLUE + "수정할 제목 : " + CT.RESET);
+			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 수정 ==" + CT.RESET);
+			System.out.print(CT.F_BLUE + "수정할 제목 : " + CT.RESET);
 			String title = sc.nextLine();
-			System.out.print(CT.FONT_BLUE + "수정할 내용 : " + CT.RESET);
+			System.out.print(CT.F_BLUE + "수정할 내용 : " + CT.RESET);
 			String body = sc.nextLine();
 
 			sql = new SecSql();
@@ -173,7 +173,7 @@ public class App {
 
 			DBUtil.update(conn, sql);
 
-			System.out.printf("[✔] %d번 게시글이 수정 되었습니다.\n", articleId);
+			System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%d번 게시글이 수정 되었습니다.\n", articleId);
 		}
 		// 게시글 삭제
 		else if (cmd.startsWith("article delete")) {
@@ -182,7 +182,7 @@ public class App {
 			try {
 				articleId = Integer.parseInt(cmd.split(" ")[2]);
 			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println("[✖] 삭제할 게시글 번호를 입력해주세요!");
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "삭제할 게시글 번호를 입력해주세요!");
 				return;
 			}
 
@@ -194,7 +194,7 @@ public class App {
 			int articlesCount = DBUtil.selectRowIntValue(conn, sql);
 
 			if (articlesCount == 0) {
-				System.out.printf("[✖] %d번 게시글은 존재하지 않습니다!\n", articleId);
+				System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "%d번 게시글은 존재하지 않습니다!\n", articleId);
 				return;
 			}
 
@@ -205,7 +205,7 @@ public class App {
 
 			DBUtil.delete(conn, sql);
 
-			System.out.printf(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== %d번 게시물 삭제 ==\n" + CT.RESET, articleId);
+			System.out.printf(CT.BG_BLACK + CT.F_WHITE + "== %d번 게시물 삭제 ==\n" + CT.RESET, articleId);
 		}
 		// 게시글 목록
 		else if (cmd.equals("article list")) {
@@ -224,15 +224,94 @@ public class App {
 			}
 
 			if (articles.isEmpty()) {
-				System.out.println("[✖] 게시글이 존재하지 않습니다.");
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "게시글이 존재하지 않습니다!");
 				return;
 			}
 
-			System.out.println(CT.BACKGROUND_BLACK + CT.FONT_WHITE + "== 게시물 목록 ==" + CT.RESET);
+			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 게시물 목록 ==" + CT.RESET);
 			System.out.println("번호	|	제목");
 			for (Article article : articles) {
 				System.out.printf("%d	|	%s\n", article.id, article.title);
 			}
+		}
+		// 회원가입 기능
+		else if (cmd.equals("member join")) {
+			String loginId = null;
+			String loginPw = null;
+			String loginPwChk = null;
+			String name = null;
+			
+			System.out.println(CT.BG_BLACK + CT.F_WHITE + "== 회원 가입 ==" + CT.RESET);
+			while(true) {
+				System.out.print(CT.F_CYAN + "가입 ID : " + CT.RESET);
+				loginId = sc.nextLine().trim();
+				
+				if(loginId.isEmpty()) {
+					System.out.println(CT.F_RED + "[✖] " + CT.RESET + "아이디를 입력해주세요!");
+					continue;
+				}
+				
+				break;
+			}
+			
+			while(true) {
+				System.out.print(CT.F_CYAN + "비밀번호 : " + CT.RESET);
+				loginPw = sc.nextLine().trim();
+				
+				if(loginPw.isEmpty()) {
+					System.out.println(CT.F_RED + "[✖] " + CT.RESET + "비밀번호를 입력해주세요!");
+					continue;
+				}
+				
+				boolean isLoginPwChk = true;
+				
+				while(true) {
+					System.out.print(CT.F_CYAN + "비밀번호 확인 : " + CT.RESET);
+					loginPwChk = sc.nextLine().trim();
+					
+					if(loginPwChk.isEmpty()) {
+						System.out.println(CT.F_RED + "[✖] " + CT.RESET + "비밀번호 확인을 입력해주세요!");
+						continue;
+					}
+					
+					if(loginPw.equals(loginPwChk) == false) {
+						System.out.println(CT.F_RED + "[✖] " + CT.RESET + "비밀번호가 일치하지 않습니다!");
+						isLoginPwChk = false;
+					}
+					
+					break;
+				}
+				
+				if(isLoginPwChk) {
+					break;
+				}
+			}
+			
+			while(true) {
+				System.out.print(CT.F_CYAN + "이름 : " + CT.RESET);
+				name = sc.nextLine().trim();
+				
+				if(name.isEmpty()) {
+					System.out.println(CT.F_RED + "[✖] " + CT.RESET + "이름을 입력해주세요!");
+					continue;
+				}
+				
+				break;
+			}
+			
+			SecSql sql = new SecSql();
+
+			sql.append("INSERT INTO `member`");
+			sql.append("SET regDate = NOW()");
+			sql.append(", updateDate = NOW()");
+			sql.append(", loginId = ?", loginId);
+			sql.append(", loginPw = ?", loginPw);
+			sql.append(", `name` = ?", name);
+			
+			int id = DBUtil.insert(conn, sql);
+			
+			System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%s 회원님 회원가입이 완료되었습니다.\n", name);
+			
 		}
 	}
 }
