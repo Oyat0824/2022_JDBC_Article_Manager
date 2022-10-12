@@ -26,8 +26,8 @@ public class App {
 			String cmd = sc.nextLine().trim();
 
 			// 도움말
-			if (cmd.equals("help")) {
-				Help.showHelp();
+			if (cmd.startsWith("help")) {
+				Help.showHelp(cmd);
 				continue;
 			}
 			
