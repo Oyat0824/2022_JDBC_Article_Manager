@@ -46,3 +46,9 @@ SET
 # article 조회
 DESC article;
 SELECT * FROM article ORDER BY id DESC;
+
+# member 조회
+DESC `member`;
+SELECT * FROM `member`;
+
+SELECT COUNT(loginId) > 0 FROM `member` WHERE loginId = 'a';
