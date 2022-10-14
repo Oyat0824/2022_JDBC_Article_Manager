@@ -1,9 +1,11 @@
 package com.KoreaIT.example.JAM.dao;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.KoreaIT.example.JAM.Article;
 import com.KoreaIT.example.JAM.util.DBUtil;
 import com.KoreaIT.example.JAM.util.SecSql;
 
@@ -25,16 +27,6 @@ public class ArticleDao {
 		sql.append(", `body` = ?", body);
 		
 		return DBUtil.insert(conn, sql);
-	}
-
-	// 열람*
-	public Map<String, Object> showDetail(int articleId) {
-		SecSql sql = new SecSql();
-		sql.append("SELECT *");
-		sql.append("FROM article");
-		sql.append("WHERE id = ?", articleId);
-		
-		return DBUtil.selectRow(conn, sql);
 	}
 
 	// 수정
@@ -61,25 +53,51 @@ public class ArticleDao {
 
 		DBUtil.delete(conn, sql);
 	}
-
-	// 목록*
-	public List<Map<String, Object>> showList() {
-		SecSql sql = new SecSql();
-
-		sql.append("SELECT *");
-		sql.append("FROM article");
-		sql.append("ORDER BY id DESC");
-
-		return DBUtil.selectRows(conn, sql);
-	}
 	
-	// 게시글 존재 확인
+	// 게시글 존재 확인 (Boolean)
 	public boolean isArticleExists(int articleId) {
 		SecSql sql = new SecSql();
+		
 		sql.append("SELECT COUNT(id) > 0");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", articleId);
 
 		return DBUtil.selectRowBooleanValue(conn, sql);
+	}
+	
+	// 게시글 존재 확인
+	public Article getArticle(int articleId) {
+		SecSql sql = new SecSql();
+		
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("WHERE id = ?", articleId);
+
+		Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+		
+		if (articleMap.isEmpty()) {
+			return null;
+		}
+		
+		return new Article(articleMap);
+	}
+
+	// 게시글들 존재 확인
+	public List<Article> getArticles() {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("ORDER BY id DESC");
+		
+		List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
+
+		List<Article> articles = new ArrayList<Article>();
+		
+		for (Map<String, Object> articleMap : articleListMap) {
+			articles.add(new Article(articleMap));
+		}
+		
+		return articles;
 	}
 }

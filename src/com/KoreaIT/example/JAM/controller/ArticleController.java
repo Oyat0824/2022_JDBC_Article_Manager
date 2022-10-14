@@ -2,9 +2,7 @@ package com.KoreaIT.example.JAM.controller;
 
 import java.sql.Connection;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import com.KoreaIT.example.JAM.Article;
@@ -42,15 +40,13 @@ public class ArticleController extends Controller {
 			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "열람할 게시글 번호를 입력해주세요!");
 			return;
 		}
-
-		Map<String, Object> articleMap = articleService.showDetail(articleId);
-
-		if (articleMap.isEmpty()) {
-			System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "게시글이 존재하지 않습니다!\n");
+		
+		Article article = articleService.getArticle(articleId);
+		
+		if(article == null) {
+			System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "%d번 게시글은 존재하지 않습니다!\n", articleId);
 			return;
 		}
-
-		Article article = new Article(articleMap);
 
 		System.out.println(CT.F_PURPLE + "=== 게시글 열람 ===" + CT.RESET);
 		System.out.printf("번호 : %d\n", article.id);
@@ -115,13 +111,7 @@ public class ArticleController extends Controller {
 
 	// 게시글 목록
 	public void showList(String cmd) {
-		List<Article> articles = new ArrayList<Article>();
-
-		List<Map<String, Object>> articleListMap = articleService.showList();
-
-		for (Map<String, Object> articleMap : articleListMap) {
-			articles.add(new Article(articleMap));
-		}
+		List<Article> articles = articleService.getArticles();
 
 		if (articles.isEmpty()) {
 			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "게시글이 존재하지 않습니다!");
