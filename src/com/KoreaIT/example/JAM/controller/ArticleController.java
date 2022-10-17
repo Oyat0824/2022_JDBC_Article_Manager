@@ -17,16 +17,16 @@ public class ArticleController extends Controller {
 	
 	// 게시글 작성
 	public void doWrite(String cmd) {
-		System.out.println(CT.F_PURPLE + "=== 게시글 작성 ===" + CT.RESET);
+		CT.PurpleTL("=== 게시글 작성 ===");
 		String title = null;
 		String body = null;
 		
 		while(true) {
-			System.out.print(CT.F_BLUE + "제목 : " + CT.RESET);
+			CT.BlueT("제목 : ");
 			title = sc.nextLine();
 			
 			if(title.isEmpty()) {
-				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "게시글 제목을 입력해주세요!");
+				CT.CrossMark("게시글 제목을 입력해주세요!");
 				continue;
 			}
 			
@@ -34,11 +34,11 @@ public class ArticleController extends Controller {
 		}
 		
 		while(true) {
-			System.out.print(CT.F_BLUE + "내용 : " + CT.RESET);
+			CT.BlueT("내용 : ");
 			body = sc.nextLine();
 			
 			if(body.isEmpty()) {
-				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "게시글 내용을 입력해주세요!");
+				CT.CrossMark("게시글 내용을 입력해주세요!");
 				continue;
 			}
 			
@@ -46,8 +46,8 @@ public class ArticleController extends Controller {
 		}
 
 		int id = articleService.doWrite(title, body);
-
-		System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%d번 게시글이 생성 되었습니다.\n", id);
+		
+		CT.CheckMark("%d번 게시글이 생성 되었습니다.", id);
 	}
 	
 	// 게시글 열람
@@ -57,18 +57,18 @@ public class ArticleController extends Controller {
 		try {
 			articleId = Integer.parseInt(cmd.split(" ")[2]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "열람할 게시글 번호를 입력해주세요!");
+			CT.CrossMark("열람할 게시글 번호를 입력해주세요!");
 			return;
 		}
 		
 		Article article = articleService.getArticle(articleId);
 		
 		if(article == null) {
-			System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "%d번 게시글은 존재하지 않습니다!\n", articleId);
+			CT.CrossMark("%d번 게시글은 존재하지 않습니다!", articleId);
 			return;
 		}
-
-		System.out.println(CT.F_PURPLE + "=== 게시글 열람 ===" + CT.RESET);
+		
+		CT.PurpleTL("=== 게시글 열람 ===");
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("작성일 : %s\n", article.regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -84,27 +84,27 @@ public class ArticleController extends Controller {
 		try {
 			articleId = Integer.parseInt(cmd.split(" ")[2]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "검색할 게시글 번호를 입력해주세요!");
+			CT.CrossMark("검색할 게시글 번호를 입력해주세요!");
 			return;
 		}
 
 		boolean isArticleExists = articleService.isArticleExists(articleId);
 
 		if (isArticleExists == false) {
-			System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "%d번 게시글은 존재하지 않습니다!\n", articleId);
+			CT.CrossMark("%d번 게시글은 존재하지 않습니다!", articleId);
 			return;
 		}
 
-		System.out.println(CT.F_PURPLE + "=== 게시글 수정 ===" + CT.RESET);
+		CT.PurpleTL("=== 게시글 수정 ===");
 		String title = null;
 		String body = null;
 		
 		while(true) {
-			System.out.print(CT.F_BLUE + "수정할 제목 : " + CT.RESET);
+			CT.BlueT("수정할 제목 : ");
 			title = sc.nextLine();
 			
 			if(title.isEmpty()) {
-				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "수정할 게시글 제목을 입력해주세요!");
+				CT.CrossMark("수정할 게시글 제목을 입력해주세요!");
 				continue;
 			}
 			
@@ -112,11 +112,11 @@ public class ArticleController extends Controller {
 		}
 		
 		while(true) {
-			System.out.print(CT.F_BLUE + "수정할 내용 : " + CT.RESET);
+			CT.BlueT("수정할 내용 : ");
 			body = sc.nextLine();
 			
 			if(body.isEmpty()) {
-				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "수정할 게시글 내용을 입력해주세요!");
+				CT.CrossMark("수정할 게시글 내용을 입력해주세요!");
 				continue;
 			}
 			
@@ -125,7 +125,7 @@ public class ArticleController extends Controller {
 		
 		articleService.doModify(articleId, title, body);
 
-		System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%d번 게시글이 수정 되었습니다.\n", articleId);
+		CT.CheckMark("%d번 게시글이 수정 되었습니다.", articleId);
 	}
 
 	// 게시글 삭제
@@ -135,20 +135,20 @@ public class ArticleController extends Controller {
 		try {
 			articleId = Integer.parseInt(cmd.split(" ")[2]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "삭제할 게시글 번호를 입력해주세요!");
+			CT.CrossMark("삭제할 게시글 번호를 입력해주세요!");
 			return;
 		}
 
 		boolean isArticleExists = articleService.isArticleExists(articleId);
 
 		if (isArticleExists == false) {
-			System.out.printf(CT.F_RED + "[✖] " + CT.RESET + "%d번 게시글은 존재하지 않습니다!\n", articleId);
+			CT.CrossMark("%d번 게시글은 존재하지 않습니다!", articleId);
 			return;
 		}
 
 		articleService.doDelete(articleId);
 		
-		System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + "%d번 게시물 삭제\n" + CT.RESET, articleId);
+		CT.CheckMark("%d번 게시물 삭제", articleId);
 	}
 
 	// 게시글 목록
@@ -156,7 +156,7 @@ public class ArticleController extends Controller {
 		List<Article> articles = articleService.getArticles();
 
 		if (articles.isEmpty()) {
-			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "게시글이 존재하지 않습니다!");
+			CT.CrossMark("게시글이 존재하지 않습니다!");
 			return;
 		}
 

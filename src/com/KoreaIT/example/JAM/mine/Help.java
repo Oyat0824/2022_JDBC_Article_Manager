@@ -7,37 +7,42 @@ public class Help {
 		try {
 			num = Integer.parseInt(cmd.split(" ")[1]);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println(CT.F_PURPLE + "보고싶은 명령어 목록을 골라주세요." + CT.RESET);
-			System.out.println(CT.F_YELLOW + "명령어 > help [번호]\n" + CT.RESET);
-			System.out.println(CT.F_BLUE + "1. 게시글 전용 명령어" + CT.RESET);
-			System.out.println(CT.F_GREEN + "2. 회원 전용 명령어" + CT.RESET);
-			System.out.println(CT.F_CYAN + "3. 기타 명령어" + CT.RESET);
+			CT.PurpleTL("보고싶은 명령어 목록을 골라주세요.");
+			CT.YellowTL("명령어 > help [번호]\n");
+			CT.BlueTL("1. 게시글 전용 명령어");
+			CT.GreenTL("2. 회원 전용 명령어");
+			CT.CyanTL("3. 기타 명령어");
+			
 			return;
 		}
 		
 		if(num == 1) {
-			System.out.println(CT.F_PURPLE + "=== 게시글 전용 명령어 ===" + CT.RESET);
-			System.out.println(CT.F_GREEN + "article write			: 게시글 작성" + CT.RESET);
-			System.out.println(CT.F_YELLOW + "article detail [번호]		: 게시글 열람" + CT.RESET);
-			System.out.println(CT.F_GREEN + "article modify [번호]		: 게시글 수정" + CT.RESET);
-			System.out.println(CT.F_YELLOW + "article delete [번호]		: 게시글 삭제" + CT.RESET);
-			System.out.println(CT.F_GREEN + "article list			: 게시글 목록" + CT.RESET);	
+			CT.PurpleTL("=== 게시글 전용 명령어 ===");
+			CT.GreenTL( "article write			: 게시글 작성");
+			CT.YellowTL("article detail [번호]		: 게시글 열람");
+			CT.GreenTL( "article modify [번호]		: 게시글 수정");
+			CT.YellowTL("article delete [번호]		: 게시글 삭제");
+			CT.GreenTL( "article list			: 게시글 목록");
+			
 			return;
 		}
 		else if(num == 2) {
-			System.out.println(CT.F_PURPLE + "\n=== 회원 전용 명령어 ===" + CT.RESET);
-			System.out.println(CT.F_GREEN + "member join			: 회원가입" + CT.RESET);
-			System.out.println(CT.F_YELLOW + "member login			: 로그인" + CT.RESET);
+			CT.PurpleTL("\n=== 회원 전용 명령어 ===");
+			CT.GreenTL( "member join			: 회원가입");
+			CT.YellowTL("member login			: 로그인");
+			
 			return;
 		}
 		else if(num == 3) {
-			System.out.println(CT.F_PURPLE + "\n=== 기타 명령어 ===" + CT.RESET);
-			System.out.println(CT.F_RED + "help [번호]			: 도움말 확인" + CT.RESET);
-			System.out.println(CT.F_RED + "exit				: 프로그램 종료" + CT.RESET);
+			CT.PurpleTL("\n=== 기타 명령어 ===");
+			CT.RedTL("help [번호]			: 도움말 확인");
+			CT.RedTL("exit				: 프로그램 종료");
+
 			return;
 		}
 		else {
-			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "해당하는 번호의 명령어 목록이 존재하지 않습니다!");
+			CT.CrossMark("해당하는 번호의 명령어 목록이 존재하지 않습니다!");
+			
 			return;
 		}
 	}

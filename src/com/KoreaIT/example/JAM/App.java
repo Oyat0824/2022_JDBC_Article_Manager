@@ -25,15 +25,15 @@ public class App {
 		System.out.print(CT.RESET);
 
 		while (true) {
-			System.out.printf(CT.F_CYAN + "\n명령어 > " + CT.RESET);
-			String cmd = Container.sc.nextLine().trim();
+			CT.CyanT("\n명령어 > ");
+			String cmd = sc.nextLine().trim();
 
 			Connection conn = null;
 
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "JDBC 드라이버 로딩 실패");
+				CT.CrossMark("JDBC 드라이버 로딩 실패");
 				break;
 			}
 
@@ -46,7 +46,7 @@ public class App {
 				
 				// 프로그램 종료
 				if (cmd.equals("exit")) {
-					System.out.println(CT.F_GREEN + "[✔] " + CT.RESET + "프로그램을 종료합니다.");
+					CT.CheckMark("프로그램을 종료합니다.");
 					break;
 				}
 				
@@ -54,7 +54,7 @@ public class App {
 				doAction(cmd);
 				
 			} catch (SQLException e) {
-				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "DB 접속 에러 : " + e);
+				CT.CrossMark("DB 접속 에러 : " + e);
 				break;
 			} finally {
 				try {
@@ -109,7 +109,7 @@ public class App {
 		}
 		// 명령어가 없는 경우
 		else {
-			System.out.println(CT.F_RED + "[✖] " + CT.RESET + "존재하지 않는 명령어입니다!");
+			CT.CrossMark("존재하지 않는 명령어입니다!");
 			return;
 		}
 	}
