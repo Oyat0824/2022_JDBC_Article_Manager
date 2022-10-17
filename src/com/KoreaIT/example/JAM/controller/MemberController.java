@@ -1,18 +1,15 @@
 package com.KoreaIT.example.JAM.controller;
 
-import java.sql.Connection;
-import java.util.Scanner;
-
 import com.KoreaIT.example.JAM.Member;
+import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.mine.CT;
 import com.KoreaIT.example.JAM.service.MemberService;
 
 public class MemberController extends Controller {
 	private MemberService memberService;
 
-	public MemberController(Connection conn, Scanner sc) {
-		super(sc);
-		this.memberService = new MemberService(conn);
+	public MemberController() {
+		memberService = Container.memberService;
 	}
 
 	// 회원 가입 기능
@@ -124,8 +121,8 @@ public class MemberController extends Controller {
 		}
 		
 		Member member = memberService.getMember(loginId);
-		int tryCount = 0;
-		int tryMaxCount = 3;
+		int tryCount = 0;		// 로그인 시도 횟수
+		int tryMaxCount = 3;	// 최대 로그인 시도 횟수
 
 		// 비밀번호 입력 부분
 		while (true) {

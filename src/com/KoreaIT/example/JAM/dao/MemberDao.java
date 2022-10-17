@@ -10,7 +10,7 @@ import com.KoreaIT.example.JAM.util.SecSql;
 public class MemberDao {
 	private Connection conn;
 
-	public MemberDao(Connection conn) {
+	public MemberDao() {
 		this.conn = conn;
 	}
 

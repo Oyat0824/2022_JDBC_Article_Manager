@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.controller.ArticleController;
 import com.KoreaIT.example.JAM.controller.MemberController;
 import com.KoreaIT.example.JAM.mine.CT;
@@ -13,7 +14,9 @@ import com.KoreaIT.example.JAM.mine.Help;
 public class App {
 	public void run() {
 		Scanner sc = new Scanner(System.in);
-
+		
+		Container.init();
+		
 		System.out.println(CT.F_GREEN);
 		System.out.println("▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
 		System.out.println("█░░░░░░░░▀█▄▀▄▀██████░▀█▄▀▄▀██████░");
@@ -23,18 +26,7 @@ public class App {
 
 		while (true) {
 			System.out.printf(CT.F_CYAN + "\n명령어 > " + CT.RESET);
-			String cmd = sc.nextLine().trim();
-
-			// 도움말
-			if (cmd.startsWith("help")) {
-				Help.showHelp(cmd);
-				continue;
-			}
-			
-			if (cmd.equals("exit")) {
-				System.out.println(CT.F_GREEN + "[✔] " + CT.RESET + "프로그램을 종료합니다.");
-				break;
-			}
+			String cmd = Container.sc.nextLine().trim();
 
 			Connection conn = null;
 
@@ -51,8 +43,16 @@ public class App {
 
 			try {
 				conn = DriverManager.getConnection(url, user, pw);
-
-				doAction(conn, sc, cmd);
+				
+				// 프로그램 종료
+				if (cmd.equals("exit")) {
+					System.out.println(CT.F_GREEN + "[✔] " + CT.RESET + "프로그램을 종료합니다.");
+					break;
+				}
+				
+				// 명령어 실행
+				doAction(cmd);
+				
 			} catch (SQLException e) {
 				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "DB 접속 에러 : " + e);
 				break;
@@ -71,9 +71,9 @@ public class App {
 		sc.close();
 	}
 
-	private void doAction(Connection conn, Scanner sc, String cmd) {
-		MemberController memberController = new MemberController(conn, sc);
-		ArticleController articleController = new ArticleController(conn, sc);
+	private void doAction(String cmd) {
+		MemberController memberController = Container.memberController;
+		ArticleController articleController = Container.articleController;
 		
 		// 회원가입 기능
 		if (cmd.equals("member join")) {
@@ -102,6 +102,10 @@ public class App {
 		// 게시글 목록
 		else if (cmd.equals("article list")) {
 			articleController.showList(cmd);
+		}
+		// 도움말
+		else if (cmd.startsWith("help")) {
+			Help.showHelp(cmd);
 		}
 		// 명령어가 없는 경우
 		else {
