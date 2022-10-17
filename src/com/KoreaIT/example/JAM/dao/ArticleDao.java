@@ -65,7 +65,7 @@ public class ArticleDao {
 		return DBUtil.selectRowBooleanValue(conn, sql);
 	}
 	
-	// 게시글 존재 확인
+	// 게시글 정보 가져오기
 	public Article getArticle(int articleId) {
 		SecSql sql = new SecSql();
 		
@@ -82,7 +82,7 @@ public class ArticleDao {
 		return new Article(articleMap);
 	}
 
-	// 게시글들 존재 확인
+	// 게시글들 정보 가져오기
 	public List<Article> getArticles() {
 		SecSql sql = new SecSql();
 

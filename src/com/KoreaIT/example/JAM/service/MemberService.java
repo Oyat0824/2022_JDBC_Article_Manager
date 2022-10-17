@@ -2,6 +2,7 @@ package com.KoreaIT.example.JAM.service;
 
 import java.sql.Connection;
 
+import com.KoreaIT.example.JAM.Member;
 import com.KoreaIT.example.JAM.dao.MemberDao;
 
 public class MemberService {
@@ -16,9 +17,14 @@ public class MemberService {
 		return memberDao.doJoin(loginId, loginPw, name);
 	}
 
-	// 로그인 아이디 중복 체크
-	public boolean isLoginIdDupChk(String loginId) {
-		return memberDao.isLoginIdDupChk(loginId);
+	// 아이디 중복 체크
+	public boolean isLoginIdDup(String loginId) {
+		return memberDao.isLoginIdDup(loginId);
+	}
+	
+	// 회원 정보 가져오기
+	public Member getMember(String loginId) {
+		return memberDao.getMember(loginId);
 	}
 
 }

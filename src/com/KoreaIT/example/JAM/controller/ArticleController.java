@@ -20,10 +20,32 @@ public class ArticleController extends Controller {
 	// 게시글 작성
 	public void doWrite(String cmd) {
 		System.out.println(CT.F_PURPLE + "=== 게시글 작성 ===" + CT.RESET);
-		System.out.print(CT.F_BLUE + "제목 : " + CT.RESET);
-		String title = sc.nextLine();
-		System.out.print(CT.F_BLUE + "내용 : " + CT.RESET);
-		String body = sc.nextLine();
+		String title = null;
+		String body = null;
+		
+		while(true) {
+			System.out.print(CT.F_BLUE + "제목 : " + CT.RESET);
+			title = sc.nextLine();
+			
+			if(title.isEmpty()) {
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "게시글 제목을 입력해주세요!");
+				continue;
+			}
+			
+			break;
+		}
+		
+		while(true) {
+			System.out.print(CT.F_BLUE + "내용 : " + CT.RESET);
+			body = sc.nextLine();
+			
+			if(body.isEmpty()) {
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "게시글 내용을 입력해주세요!");
+				continue;
+			}
+			
+			break;
+		}
 
 		int id = articleService.doWrite(title, body);
 
@@ -76,10 +98,32 @@ public class ArticleController extends Controller {
 		}
 
 		System.out.println(CT.F_PURPLE + "=== 게시글 수정 ===" + CT.RESET);
-		System.out.print(CT.F_BLUE + "수정할 제목 : " + CT.RESET);
-		String title = sc.nextLine();
-		System.out.print(CT.F_BLUE + "수정할 내용 : " + CT.RESET);
-		String body = sc.nextLine();
+		String title = null;
+		String body = null;
+		
+		while(true) {
+			System.out.print(CT.F_BLUE + "수정할 제목 : " + CT.RESET);
+			title = sc.nextLine();
+			
+			if(title.isEmpty()) {
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "수정할 게시글 제목을 입력해주세요!");
+				continue;
+			}
+			
+			break;
+		}
+		
+		while(true) {
+			System.out.print(CT.F_BLUE + "수정할 내용 : " + CT.RESET);
+			body = sc.nextLine();
+			
+			if(body.isEmpty()) {
+				System.out.println(CT.F_RED + "[✖] " + CT.RESET + "수정할 게시글 내용을 입력해주세요!");
+				continue;
+			}
+			
+			break;
+		}
 		
 		articleService.doModify(articleId, title, body);
 

@@ -27,6 +27,7 @@ public class Help {
 		else if(num == 2) {
 			System.out.println(CT.F_PURPLE + "\n=== 회원 전용 명령어 ===" + CT.RESET);
 			System.out.println(CT.F_GREEN + "member join			: 회원가입" + CT.RESET);
+			System.out.println(CT.F_YELLOW + "member login			: 로그인" + CT.RESET);
 			return;
 		}
 		else if(num == 3) {
