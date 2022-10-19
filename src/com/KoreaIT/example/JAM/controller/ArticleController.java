@@ -17,6 +17,11 @@ public class ArticleController extends Controller {
 	
 	// 게시글 작성
 	public void doWrite(String cmd) {
+		if (Container.session.isLogined() == false) {
+			CT.CrossMark("로그인 후 이용해주세요!");
+			return;
+		}
+		
 		CT.PurpleTL("=== 게시글 작성 ===");
 		String title = null;
 		String body = null;
@@ -33,17 +38,8 @@ public class ArticleController extends Controller {
 			break;
 		}
 		
-		while(true) {
-			CT.BlueT("내용 : ");
-			body = sc.nextLine();
-			
-			if(body.isEmpty()) {
-				CT.CrossMark("게시글 내용을 입력해주세요!");
-				continue;
-			}
-			
-			break;
-		}
+		CT.BlueT("내용 : ");
+		body = sc.nextLine();
 
 		int id = articleService.doWrite(title, body);
 		
@@ -79,6 +75,11 @@ public class ArticleController extends Controller {
 
 	// 게시글 수정
 	public void doModify(String cmd) {
+		if (Container.session.isLogined() == false) {
+			CT.CrossMark("로그인 후 이용해주세요!");
+			return;
+		}
+		
 		int articleId = -1;
 
 		try {
@@ -88,9 +89,9 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		boolean isArticleExists = articleService.isArticleExists(articleId);
-
-		if (isArticleExists == false) {
+		Article article = articleService.getArticle(articleId);
+		
+		if(article == null) {
 			CT.CrossMark("%d번 게시글은 존재하지 않습니다!", articleId);
 			return;
 		}
@@ -99,29 +100,16 @@ public class ArticleController extends Controller {
 		String title = null;
 		String body = null;
 		
-		while(true) {
-			CT.BlueT("수정할 제목 : ");
-			title = sc.nextLine();
-			
-			if(title.isEmpty()) {
-				CT.CrossMark("수정할 게시글 제목을 입력해주세요!");
-				continue;
-			}
-			
-			break;
+		CT.CheckMark("[ %s ] 제목 수정을 원치 않으면 공백 상태로 넘어가주세요!", article.title);
+		CT.BlueT("수정할 제목 : ");
+		title = sc.nextLine();
+		
+		if(title.isEmpty()) {
+			title = article.title;
 		}
 		
-		while(true) {
-			CT.BlueT("수정할 내용 : ");
-			body = sc.nextLine();
-			
-			if(body.isEmpty()) {
-				CT.CrossMark("수정할 게시글 내용을 입력해주세요!");
-				continue;
-			}
-			
-			break;
-		}
+		CT.BlueT("수정할 내용 : ");
+		body = sc.nextLine();
 		
 		articleService.doModify(articleId, title, body);
 
@@ -130,6 +118,11 @@ public class ArticleController extends Controller {
 
 	// 게시글 삭제
 	public void doDelete(String cmd) {
+		if (Container.session.isLogined() == false) {
+			CT.CrossMark("로그인 후 이용해주세요!");
+			return;
+		}
+		
 		int articleId = -1;
 
 		try {

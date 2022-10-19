@@ -76,5 +76,4 @@ public class CT {
 		System.out.printf(CT.F_RED + "[✖] " + CT.RESET + textLine + "\n", args);
 	}
 
-	
 }

@@ -14,6 +14,11 @@ public class MemberController extends Controller {
 
 	// 회원 가입 기능
 	public void doJoin(String cmd) {
+		if (Container.session.isLogined()) {
+			CT.CrossMark("이미 로그인 상태입니다!");
+			return;
+		}
+		
 		String loginId = null;
 		String loginPw = null;
 		String loginPwChk = null;
@@ -95,8 +100,8 @@ public class MemberController extends Controller {
 	}
 	
 	// 로그인 기능
-	public void doLogin(String cmd) {
-		if (Container.session.loginedMemberId > -1) {
+	public void login(String cmd) {
+		if (Container.session.isLogined()) {
 			CT.CrossMark("이미 로그인 상태입니다!");
 			return;
 		}
@@ -153,12 +158,23 @@ public class MemberController extends Controller {
 
 			CT.CheckMark("< %s >님, 환영합니다.", member.name);
 			
-			Container.session.loginedMemberId = member.id;
-			Container.session.loginedMember = member;
+			Container.session.login(member);
 			
 			break;
 		}
 
+	}
+	
+	// 로그아웃 기능
+	public void logout(String cmd) {
+		if (Container.session.isLogined() == false) {
+			CT.CrossMark("로그인 후 이용해주세요!");
+			return;
+		}
+		
+		CT.CheckMark("< %s > 계정이 로그아웃 되었습니다.", Container.session.loginedMember.loginId);
+		
+		Container.session.logout();
 	}
 	
 	// 회원 정보 기능
@@ -173,4 +189,5 @@ public class MemberController extends Controller {
 		CT.BlueTL("아이디 : ", Container.session.loginedMember.loginId);
 		CT.BlueTL("이름 : ", Container.session.loginedMember.name);
 	}
+
 }

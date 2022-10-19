@@ -28,6 +28,18 @@ public class App {
 			CT.CyanT("\n명령어 > ");
 			String cmd = Container.sc.nextLine().trim();
 
+			// 도움말
+			if (cmd.startsWith("help")) {
+				Help.showHelp(cmd);
+				continue;
+			}
+
+			// 프로그램 종료
+			if (cmd.equals("exit")) {
+				CT.CheckMark("프로그램을 종료합니다.");
+				break;
+			}
+
 			Connection conn = null;
 
 			try {
@@ -44,12 +56,6 @@ public class App {
 			try {
 				conn = DriverManager.getConnection(url, user, pw);
 				Container.conn = conn;
-
-				// 프로그램 종료
-				if (cmd.equals("exit")) {
-					CT.CheckMark("프로그램을 종료합니다.");
-					break;
-				}
 
 				// 명령어 실행
 				doAction(cmd);
@@ -82,7 +88,11 @@ public class App {
 		}
 		// 로그인
 		else if (cmd.equals("member login")) {
-			memberController.doLogin(cmd);
+			memberController.login(cmd);
+		}
+		// 로그아웃
+		else if (cmd.equals("member logout")) {
+			memberController.logout(cmd);
 		}
 		// 회원 정보
 		else if (cmd.equals("member profile")) {
@@ -107,10 +117,6 @@ public class App {
 		// 게시글 목록
 		else if (cmd.equals("article list")) {
 			articleController.showList(cmd);
-		}
-		// 도움말
-		else if (cmd.startsWith("help")) {
-			Help.showHelp(cmd);
 		}
 		// 명령어가 없는 경우
 		else {
