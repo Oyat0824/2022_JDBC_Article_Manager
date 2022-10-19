@@ -13,7 +13,7 @@ import com.KoreaIT.example.JAM.mine.Help;
 
 public class App {
 	public void run() {
-		Scanner sc = new Scanner(System.in);
+		Container.sc = new Scanner(System.in);
 		
 		Container.init();
 		
@@ -26,7 +26,7 @@ public class App {
 
 		while (true) {
 			CT.CyanT("\n명령어 > ");
-			String cmd = sc.nextLine().trim();
+			String cmd = Container.sc.nextLine().trim();
 
 			Connection conn = null;
 
@@ -43,6 +43,7 @@ public class App {
 
 			try {
 				conn = DriverManager.getConnection(url, user, pw);
+				Container.conn = conn;
 				
 				// 프로그램 종료
 				if (cmd.equals("exit")) {
@@ -68,7 +69,7 @@ public class App {
 
 		}
 
-		sc.close();
+		Container.sc.close();
 	}
 
 	private void doAction(String cmd) {

@@ -1,19 +1,17 @@
 package com.KoreaIT.example.JAM.dao;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.KoreaIT.example.JAM.Article;
+import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.util.DBUtil;
 import com.KoreaIT.example.JAM.util.SecSql;
 
 public class ArticleDao {
-	private Connection conn;
-
 	public ArticleDao() {
-		this.conn = conn;
+		
 	}
 
 	// 작성
@@ -26,7 +24,7 @@ public class ArticleDao {
 		sql.append(", title = ?", title);
 		sql.append(", `body` = ?", body);
 		
-		return DBUtil.insert(conn, sql);
+		return DBUtil.insert(Container.conn, sql);
 	}
 
 	// 수정
@@ -39,7 +37,7 @@ public class ArticleDao {
 		sql.append(", `body` = ?", body);
 		sql.append("WHERE id = ?", articleId);
 
-		DBUtil.update(conn, sql);
+		DBUtil.update(Container.conn, sql);
 		
 		return 0;
 	}
@@ -51,7 +49,7 @@ public class ArticleDao {
 		sql.append("DELETE FROM article");
 		sql.append("WHERE id = ?", articleId);
 
-		DBUtil.delete(conn, sql);
+		DBUtil.delete(Container.conn, sql);
 	}
 	
 	// 게시글 존재 확인 (Boolean)
@@ -62,7 +60,7 @@ public class ArticleDao {
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", articleId);
 
-		return DBUtil.selectRowBooleanValue(conn, sql);
+		return DBUtil.selectRowBooleanValue(Container.conn, sql);
 	}
 	
 	// 게시글 정보 가져오기
@@ -73,7 +71,7 @@ public class ArticleDao {
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", articleId);
 
-		Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+		Map<String, Object> articleMap = DBUtil.selectRow(Container.conn, sql);
 		
 		if (articleMap.isEmpty()) {
 			return null;
@@ -90,7 +88,7 @@ public class ArticleDao {
 		sql.append("FROM article");
 		sql.append("ORDER BY id DESC");
 		
-		List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
+		List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
 
 		List<Article> articles = new ArrayList<Article>();
 		

@@ -91,7 +91,7 @@ public class MemberController extends Controller {
 
 		memberService.doJoin(loginId, loginPw, name);
 
-		CT.CheckMark("< %s >님, 회원가입이 완료되었습니다.\n", name);
+		CT.CheckMark("< %s >님, 회원가입이 완료되었습니다.", name);
 	}
 
 	public void doLogin(String cmd) {
@@ -113,7 +113,7 @@ public class MemberController extends Controller {
 			boolean isLoginIdDupChk = memberService.isLoginIdDup(loginId);
 
 			if (isLoginIdDupChk == false) {
-				CT.CrossMark("< %s > 해당 아이디는 존재하지 않는 아이디입니다!\n", loginId);
+				CT.CrossMark("< %s > 해당 아이디는 존재하지 않는 아이디입니다!", loginId);
 				continue;
 			}
 
@@ -135,7 +135,6 @@ public class MemberController extends Controller {
 			loginPw = sc.nextLine().trim();
 			
 			if (loginId.isEmpty()) {
-				tryCount++;
 				CT.CrossMark("비밀번호를 입력해주세요!");
 				continue;
 			}
@@ -145,9 +144,10 @@ public class MemberController extends Controller {
 				CT.CrossMark("비밀번호가 일치하지 않습니다.");
 				continue;
 			}
-
-			CT.CheckMark("< %s >님, 환영합니다.\n", member.name);
+			
+			break;
 		}
+		CT.CheckMark("< %s >님, 환영합니다.", member.name);
 		
 	}
 }

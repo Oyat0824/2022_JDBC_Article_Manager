@@ -1,5 +1,6 @@
 package com.KoreaIT.example.JAM.container;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 import com.KoreaIT.example.JAM.controller.ArticleController;
@@ -20,8 +21,10 @@ public class Container {
 	public static ArticleDao articleDao;
 	public static MemberDao memberDao;
 	
-	public static Session session;
 	public static Scanner sc;
+	public static Session session;
+	
+	public static Connection conn;
 	
 	public static void init() {
 		session = new Session();
