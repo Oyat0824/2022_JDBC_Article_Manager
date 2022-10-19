@@ -30,6 +30,7 @@ public class Help {
 			CT.PurpleTL("\n=== 회원 전용 명령어 ===");
 			CT.GreenTL( "member join			: 회원가입");
 			CT.YellowTL("member login			: 로그인");
+			CT.GreenTL("member profile			: 회원정보");
 			
 			return;
 		}

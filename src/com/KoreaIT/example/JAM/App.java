@@ -14,9 +14,9 @@ import com.KoreaIT.example.JAM.mine.Help;
 public class App {
 	public void run() {
 		Container.sc = new Scanner(System.in);
-		
+
 		Container.init();
-		
+
 		System.out.println(CT.F_GREEN);
 		System.out.println("▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
 		System.out.println("█░░░░░░░░▀█▄▀▄▀██████░▀█▄▀▄▀██████░");
@@ -44,16 +44,16 @@ public class App {
 			try {
 				conn = DriverManager.getConnection(url, user, pw);
 				Container.conn = conn;
-				
+
 				// 프로그램 종료
 				if (cmd.equals("exit")) {
 					CT.CheckMark("프로그램을 종료합니다.");
 					break;
 				}
-				
+
 				// 명령어 실행
 				doAction(cmd);
-				
+
 			} catch (SQLException e) {
 				CT.CrossMark("DB 접속 에러 : " + e);
 				break;
@@ -75,14 +75,18 @@ public class App {
 	private void doAction(String cmd) {
 		MemberController memberController = Container.memberController;
 		ArticleController articleController = Container.articleController;
-		
-		// 회원가입 기능
+
+		// 회원가입
 		if (cmd.equals("member join")) {
 			memberController.doJoin(cmd);
 		}
-		// 로그인 기능
+		// 로그인
 		else if (cmd.equals("member login")) {
 			memberController.doLogin(cmd);
+		}
+		// 회원 정보
+		else if (cmd.equals("member profile")) {
+			memberController.showProfile(cmd);
 		}
 		// 게시글 작성
 		else if (cmd.equals("article write")) {

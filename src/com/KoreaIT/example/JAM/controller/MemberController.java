@@ -93,11 +93,17 @@ public class MemberController extends Controller {
 
 		CT.CheckMark("< %s >님, 회원가입이 완료되었습니다.", name);
 	}
-
+	
+	// 로그인 기능
 	public void doLogin(String cmd) {
+		if (Container.session.loginedMemberId > -1) {
+			CT.CrossMark("이미 로그인 상태입니다!");
+			return;
+		}
+
 		String loginId = null;
 		String loginPw = null;
-		
+
 		CT.PurpleTL("=== 로그인 ===");
 
 		// 아이디 입력 부분
@@ -119,22 +125,22 @@ public class MemberController extends Controller {
 
 			break;
 		}
-		
+
 		Member member = memberService.getMember(loginId);
-		int tryCount = 0;		// 로그인 시도 횟수
-		int tryMaxCount = 3;	// 최대 로그인 시도 횟수
+		int tryCount = 0; // 로그인 시도 횟수
+		int tryMaxCount = 3; // 최대 로그인 시도 횟수
 
 		// 비밀번호 입력 부분
 		while (true) {
-			if(tryCount >= tryMaxCount) {
+			if (tryCount >= tryMaxCount) {
 				CT.CrossMark("비밀번호를 확인하고 다시 시도해주세요!");
 				break;
 			}
-			
+
 			CT.CyanT("로그인 PW : ");
 			loginPw = sc.nextLine().trim();
-			
-			if (loginId.isEmpty()) {
+
+			if (loginPw.isEmpty()) {
 				CT.CrossMark("비밀번호를 입력해주세요!");
 				continue;
 			}
@@ -144,10 +150,27 @@ public class MemberController extends Controller {
 				CT.CrossMark("비밀번호가 일치하지 않습니다.");
 				continue;
 			}
+
+			CT.CheckMark("< %s >님, 환영합니다.", member.name);
+			
+			Container.session.loginedMemberId = member.id;
+			Container.session.loginedMember = member;
 			
 			break;
 		}
-		CT.CheckMark("< %s >님, 환영합니다.", member.name);
-		
+
+	}
+	
+	// 회원 정보 기능
+	public void showProfile(String cmd) {
+		if (Container.session.loginedMemberId == -1) {
+			CT.CrossMark("로그인 후 이용해주세요!");
+			return;
+		}
+
+		CT.PurpleTL("=== 프로필 ===");
+		CT.BlueTL ("회원 번호 : ", Container.session.loginedMember.id);
+		CT.BlueTL("아이디 : ", Container.session.loginedMember.loginId);
+		CT.BlueTL("이름 : ", Container.session.loginedMember.name);
 	}
 }

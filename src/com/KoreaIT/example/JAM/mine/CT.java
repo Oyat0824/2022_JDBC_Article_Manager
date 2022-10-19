@@ -1,6 +1,7 @@
 package com.KoreaIT.example.JAM.mine;
 
 public class CT {
+	// 텍스트 컬러
 	public static final String RESET = "\u001B[0m";
 	public static final String F_BLACK = "\u001B[30m";
 	public static final String F_RED = "\u001B[31m";
@@ -21,7 +22,7 @@ public class CT {
 	
 	// 한줄 텍스트
 	public static void BlueT(String text) {
-		System.out.printf(CT.F_CYAN + text + CT.RESET);
+		System.out.printf(CT.F_BLUE + text + CT.RESET);
 	}
 	
 	public static void CyanT(String text) {
@@ -31,6 +32,10 @@ public class CT {
 	// 텍스트 라인(끝에 엔터 추가)
 	public static void BlueTL(String textLine) {
 		System.out.println(CT.F_BLUE + textLine + CT.RESET);
+	}
+	
+	public static void BlueTL(String textLine, Object args) {
+		System.out.println(CT.F_BLUE + textLine + CT.RESET + args);
 	}
 	
 	public static void CyanTL(String textLine) {
@@ -58,11 +63,7 @@ public class CT {
 		System.out.println(CT.F_GREEN + "[✔] " + CT.RESET + textLine);
 	}
 	
-	public static void CheckMark(String textLine, int args) {
-		System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + textLine + "\n", args);
-	}
-	
-	public static void CheckMark(String textLine, String args) {
+	public static void CheckMark(String textLine, Object args) {
 		System.out.printf(CT.F_GREEN + "[✔] " + CT.RESET + textLine + "\n", args);
 	}
 
@@ -71,11 +72,7 @@ public class CT {
 		System.out.println(CT.F_RED + "[✖] " + CT.RESET + textLine);
 	}
 	
-	public static void CrossMark(String textLine, int args) {
-		System.out.printf(CT.F_RED + "[✖] " + CT.RESET + textLine + "\n", args);
-	}
-	
-	public static void CrossMark(String textLine, String args) {
+	public static void CrossMark(String textLine, Object args) {
 		System.out.printf(CT.F_RED + "[✖] " + CT.RESET + textLine + "\n", args);
 	}
 
