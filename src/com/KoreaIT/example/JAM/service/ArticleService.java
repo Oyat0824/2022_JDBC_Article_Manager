@@ -42,4 +42,9 @@ public class ArticleService {
 	public List<Article> getArticles() {
 		return articleDao.getArticles();
 	}
+	
+	// 게시글 조회수 증가
+	public void increaseHit(int articleId) {
+		articleDao.increaseHit(articleId);
+	}
 }

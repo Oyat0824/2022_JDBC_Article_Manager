@@ -1,5 +1,7 @@
 package com.KoreaIT.example.JAM.controller;
 
+import java.time.format.DateTimeFormatter;
+
 import com.KoreaIT.example.JAM.Member;
 import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.mine.CT;
@@ -186,8 +188,9 @@ public class MemberController extends Controller {
 
 		CT.PurpleTL("=== 프로필 ===");
 		CT.BlueTL ("회원 번호 : ", Container.session.loginedMember.id);
-		CT.BlueTL("아이디 : ", Container.session.loginedMember.loginId);
-		CT.BlueTL("이름 : ", Container.session.loginedMember.name);
+		CT.BlueTL("가입일	: ", Container.session.loginedMember.regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		CT.BlueTL("아이디	: ", Container.session.loginedMember.loginId);
+		CT.BlueTL("이름	: ", Container.session.loginedMember.name);
 	}
 
 }

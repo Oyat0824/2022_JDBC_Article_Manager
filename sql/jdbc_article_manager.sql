@@ -24,8 +24,19 @@ CREATE TABLE `member` (
 	`name` VARCHAR(50) NOT NULL
 );
 
-# 컬럼 추가, updateDate 컬럼 오른쪽에 추가
+# article 테이블에 회원 번호 컬럼 추가, updateDate 컬럼 오른쪽에 추가
 ALTER TABLE article ADD COLUMN memberId INT UNSIGNED NOT NULL AFTER updateDate;
+
+# article 테이블에 조회수 컬럼 추가
+ALTER TABLE article ADD COLUMN hit INT UNSIGNED NOT NULL DEFAULT 0;
+
+# article 조회
+DESC article;
+SELECT * FROM article ORDER BY id DESC;
+
+# member 조회
+DESC `member`;
+SELECT * FROM `member`;
 
 # article 데이터 추가
 INSERT INTO article
@@ -34,7 +45,8 @@ SET
 	updateDate = NOW(),
 	memberId = 1,
 	title = "제목 1",
-	`body` = "내용 1";
+	`body` = "내용 1",
+	hit = 5;
 
 INSERT INTO article
 SET
@@ -77,23 +89,15 @@ SET
 	loginPw = 'test2',
 	`name` = '유재석';
 
-# article 조회
-DESC article;
-SELECT * FROM article ORDER BY id DESC;
-
-# member 조회
-DESC `member`;
-SELECT * FROM `member`;
-SELECT loginPw FROM `member` WHERE loginId = 'test1';
-
-SELECT COUNT(loginId) > 0 FROM `member` WHERE loginId = 'a';
-
 # 이너 조인 연습
-SELECT a.id, a.regDate, a.updateDate, m.name, title, `body`
+SELECT a.*, m.name AS writerName
 FROM article AS a INNER JOIN `member` AS m ON a.memberId = m.id
-ORDER BY a.id DESC;
+WHERE a.id = 2;
 
-
+# 업데이트 연습
+UPDATE article
+SET hit = hit + 1
+WHERE id = 1;
 
 
 
@@ -107,3 +111,7 @@ SET
 	`name` = CONCAT('TestNAME', RAND());
 	
 # INSERT INTO article(regDate, updateDate, title, `body`) VALUE(?, ?, ?, ?);
+
+# 특정 부분 검색
+SELECT COUNT(loginId) > 0 FROM `member` WHERE loginId = 'test1';
+SELECT loginPw FROM `member` WHERE loginId = 'test1';

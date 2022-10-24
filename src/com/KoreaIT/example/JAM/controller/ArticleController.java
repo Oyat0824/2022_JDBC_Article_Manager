@@ -57,6 +57,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 		
+		articleService.increaseHit(articleId);
 		Article article = articleService.getArticle(articleId);
 		
 		if(article == null) {
@@ -64,12 +65,17 @@ public class ArticleController extends Controller {
 			return;
 		}
 		
+		String regDate = article.regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		String updateDate = article.updateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		
 		CT.PurpleTL("=== 게시글 열람 ===");
-		System.out.printf("번호 : %d\n", article.id);
-		System.out.printf("제목 : %s\n", article.title);
-		System.out.printf("작성일 : %s\n", article.regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		System.out.printf("수정일 : %s\n", article.updateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		System.out.printf("--------------------------- \n");
+		CT.BlueTL ("번호 : ", article.id);
+		CT.BlueTL ("제목 : ", article.title);
+		CT.BlueTL ("작성자 : ", article.writerName);
+		CT.BlueTL ("조회수 : ", article.hit);		
+		CT.BlueTL ("작성일 : ", regDate);
+		CT.BlueTL ("수정일 : ", updateDate);
+		CT.RedTL("-------------------- 내용 --------------------");
 		System.out.printf("%s\n", article.body);
 	}
 
@@ -153,10 +159,11 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		System.out.println(CT.F_PURPLE + "=== 게시물 목록 ===" + CT.RESET);
-		System.out.println(CT.F_BLUE + "번호	|	제목	|	작성자" + CT.RESET);
+		CT.PurpleTL("=== 게시물 목록 ===");
+		CT.BlueTL("번호	|	제목	|	작성자	|	조회수	|	작성일");
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, article.writerName);
+			String updateDate = article.updateDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			System.out.printf("%d	|	%s	|	%s	|	%d	|	%s\n", article.id, article.title, article.writerName, article.hit, updateDate);
 		}
 	}
 }
