@@ -8,7 +8,6 @@ public class Session {
 	
 	public Session() {
 		loginedMemberId = -1;
-		
 	}
 
 	public void login(Member member) {

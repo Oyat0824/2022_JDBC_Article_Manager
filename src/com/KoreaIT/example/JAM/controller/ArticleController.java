@@ -23,8 +23,8 @@ public class ArticleController extends Controller {
 		}
 		
 		CT.PurpleTL("=== 게시글 작성 ===");
+		int memberId = Container.session.loginedMemberId;
 		String title = null;
-		String body = null;
 		
 		while(true) {
 			CT.BlueT("제목 : ");
@@ -39,9 +39,9 @@ public class ArticleController extends Controller {
 		}
 		
 		CT.BlueT("내용 : ");
-		body = sc.nextLine();
+		String body = sc.nextLine();
 
-		int id = articleService.doWrite(title, body);
+		int id = articleService.doWrite(memberId, title, body);
 		
 		CT.CheckMark("%d번 게시글이 생성 되었습니다.", id);
 	}
@@ -154,9 +154,9 @@ public class ArticleController extends Controller {
 		}
 
 		System.out.println(CT.F_PURPLE + "=== 게시물 목록 ===" + CT.RESET);
-		System.out.println(CT.F_BLUE + "번호	|	제목" + CT.RESET);
+		System.out.println(CT.F_BLUE + "번호	|	제목	|	작성자" + CT.RESET);
 		for (Article article : articles) {
-			System.out.printf("%d	|	%s\n", article.id, article.title);
+			System.out.printf("%d	|	%s	|	%s\n", article.id, article.title, article.writerName);
 		}
 	}
 }

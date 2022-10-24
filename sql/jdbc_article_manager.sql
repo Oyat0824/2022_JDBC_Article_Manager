@@ -24,13 +24,78 @@ CREATE TABLE `member` (
 	`name` VARCHAR(50) NOT NULL
 );
 
+# 컬럼 추가, updateDate 컬럼 오른쪽에 추가
+ALTER TABLE article ADD COLUMN memberId INT UNSIGNED NOT NULL AFTER updateDate;
+
 # article 데이터 추가
 INSERT INTO article
 SET
 	regDate = NOW(),
 	updateDate = NOW(),
-	title = CONCAT("제목", RAND()),
-	`body` = CONCAT("내용", RAND());
+	memberId = 1,
+	title = "제목 1",
+	`body` = "내용 1";
+
+INSERT INTO article
+SET
+	regDate = NOW(),
+	updateDate = NOW(),
+	memberId = 2,
+	title = "제목 2",
+	`body` = "내용 2";
+	
+INSERT INTO article
+SET
+	regDate = NOW(),
+	updateDate = NOW(),
+	memberId = 2,
+	title = "제목 3",
+	`body` = "내용 3";
+	
+INSERT INTO article
+SET
+	regDate = NOW(),
+	updateDate = NOW(),
+	memberId = 1,
+	title = "제목 4",
+	`body` = "내용 4";
+
+# meber 데이터 추가
+INSERT INTO `member`
+SET
+	regDate = NOW(),
+	updateDate = NOW(),
+	loginID = 'test1',
+	loginPw = 'test1',
+	`name` = '박명수';
+	
+INSERT INTO `member`
+SET
+	regDate = NOW(),
+	updateDate = NOW(),
+	loginID = 'test2',
+	loginPw = 'test2',
+	`name` = '유재석';
+
+# article 조회
+DESC article;
+SELECT * FROM article ORDER BY id DESC;
+
+# member 조회
+DESC `member`;
+SELECT * FROM `member`;
+SELECT loginPw FROM `member` WHERE loginId = 'test1';
+
+SELECT COUNT(loginId) > 0 FROM `member` WHERE loginId = 'a';
+
+# 이너 조인 연습
+SELECT a.id, a.regDate, a.updateDate, m.name, title, `body`
+FROM article AS a INNER JOIN `member` AS m ON a.memberId = m.id
+ORDER BY a.id DESC;
+
+
+
+
 
 # meber 데이터 추가
 INSERT INTO `member`
@@ -40,15 +105,5 @@ SET
 	loginID = CONCAT('TestID', RAND()),
 	loginPw = CONCAT('TestPW', RAND()),
 	`name` = CONCAT('TestNAME', RAND());
-
+	
 # INSERT INTO article(regDate, updateDate, title, `body`) VALUE(?, ?, ?, ?);
-
-# article 조회
-DESC article;
-SELECT * FROM article ORDER BY id DESC;
-
-# member 조회
-DESC `member`;
-SELECT * FROM `member`;
-
-SELECT COUNT(loginId) > 0 FROM `member` WHERE loginId = 'a';
