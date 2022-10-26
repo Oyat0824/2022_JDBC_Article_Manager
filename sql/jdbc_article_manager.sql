@@ -115,3 +115,33 @@ SET
 # 특정 부분 검색
 SELECT COUNT(loginId) > 0 FROM `member` WHERE loginId = 'test1';
 SELECT loginPw FROM `member` WHERE loginId = 'test1';
+
+# 서브쿼리 (FROM 괄호안에 있는것을 테이블로 취급해서 조건으로 다시 테이블 생성)
+SELECT a.*
+FROM (SELECT * FROM article WHERE title LIKE '제목%' ) a
+WHERE id = 2;
+
+# 게시글 조건에 따라 찾기, 페이징 기능
+SELECT a.*, m.name AS writerName
+FROM article AS a
+INNER JOIN `member` AS m
+ON a.memberId = m.id
+WHERE a.title LIKE "%1%"
+ORDER BY a.id DESC
+LIMIT 0, 10;
+
+SELECT *
+FROM (
+	SELECT a.*, m.name AS writerName
+	FROM article AS a
+	INNER JOIN `member` AS m
+	ON a.memberId = m.id
+	ORDER BY a.id DESC
+	LIMIT 0, 10
+) A
+WHERE title LIKE "%1%";
+
+
+
+
+
