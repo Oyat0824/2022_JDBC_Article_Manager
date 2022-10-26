@@ -22,7 +22,7 @@ public class Help {
 			CT.YellowTL("article detail [번호]		: 게시글 열람");
 			CT.GreenTL( "article modify [번호]		: 게시글 수정");
 			CT.YellowTL("article delete [번호]		: 게시글 삭제");
-			CT.GreenTL( "article list			: 게시글 목록");
+			CT.GreenTL( "article list [번호] [검색어]	: 게시글 목록");
 			
 			return;
 		}

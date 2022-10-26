@@ -115,7 +115,7 @@ public class App {
 			articleController.doDelete(cmd);
 		}
 		// 게시글 목록
-		else if (cmd.equals("article list")) {
+		else if (cmd.startsWith("article list")) {
 			articleController.showList(cmd);
 		}
 		// 명령어가 없는 경우

@@ -162,7 +162,22 @@ public class ArticleController extends Controller {
 
 	// 게시글 목록
 	public void showList(String cmd) {
-		List<Article> articles = articleService.getArticles();
+		String[] cmdBits = cmd.split(" ");
+		
+		int page = 1;
+		String searchKeyword = "";
+		
+		if(cmdBits.length >= 3) {
+			page = Integer.parseInt(cmdBits[2]);
+		}
+		
+		if(cmdBits.length >= 4) {
+			searchKeyword = cmdBits[3];
+		}
+		
+		int itemsInAPage = 10;
+		
+		List<Article> articles = articleService.getForPrintArticles(page, itemsInAPage, searchKeyword);
 
 		if (articles.isEmpty()) {
 			CT.CrossMark("게시글이 존재하지 않습니다!");
